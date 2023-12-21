@@ -1,32 +1,34 @@
-name: CI
+name: CI NestJs App
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [15]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js and pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        node-version: 18
-        version: 7  # Specify the version of pnpm you want to use
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
-    - name: Install dependencies
-      run: |
-        pnpm install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-    - name: Build
-      run: |
-        pnpm build
+      - name: Install Dependencies
+        run: pnpm install
 
-    - name: Test
-      run: |
-        pnpm test
+      - name: Build and Test
+        run: pnpm test
