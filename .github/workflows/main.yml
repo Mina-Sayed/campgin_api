@@ -11,15 +11,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Git credentials
         run: |
-          echo "machine bitbucket.org login mina121-admin password $BITBUCKET_APP_PASSWORD" > ~/.netrc
+          echo "machine bitbucket.org login mina121-admin password \"$BITBUCKET_APP_PASSWORD\"" > ~/.netrc
           git config --global user.email "mina.sayed@exacall.com"
           git config --global user.name "Mina Sayed"
 
-      - name: Debug
+      - name: Debug 
         run: |
           git remote -v
           git branch -a
