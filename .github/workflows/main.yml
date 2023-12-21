@@ -1,4 +1,4 @@
-name: Run NestJS App
+name: CI
 
 on:
   push:
@@ -10,33 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js with pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          node-version: 18
+    - name: Setup Node.js and pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        node-version: 18
+        version: 7  # Specify the version of pnpm you want to use
 
-      - name: Install dependencies
-        run: pnpm install
+    - name: Install dependencies
+      run: |
+        pnpm install
 
-      - name: Build the app
-        run: pnpm run build
+    - name: Build
+      run: |
+        pnpm build
 
-  run-app:
-    runs-on: ubuntu-latest
-
-    needs: build
-
-    steps:
-      - name: Set up Node.js with pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run the app
-        run: pnpm run start:dev
+    - name: Test
+      run: |
+        pnpm test
