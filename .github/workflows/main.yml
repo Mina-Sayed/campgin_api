@@ -1,0 +1,19 @@
+name: Mirror to Bitbucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Mirror to Bitbucket
+        run: |
+          git remote add bitbucket  https://mina121-admin@bitbucket.org/mina121/campgin_api.git
+          git push --mirror bitbucket
