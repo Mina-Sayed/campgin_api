@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Run NestJS App
 
 on:
   push:
@@ -23,3 +23,20 @@ jobs:
 
       - name: Build the app
         run: pnpm run build
+
+  run-app:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Set up Node.js with pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run the app
+        run: pnpm run start:dev
