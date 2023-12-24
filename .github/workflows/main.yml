@@ -2,8 +2,8 @@ name: CI NestJs App
 
 on:
   push:
-  workflow_run:
-    branches: main
+    branches: 
+    - main
 
 jobs:
   build:
