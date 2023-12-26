@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: campgin
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm start -- --max-old-space-size=4096
+    runtime: node
