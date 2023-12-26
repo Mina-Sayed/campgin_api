@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CampginModule } from './campgin/campgin.module';
+import { UserModule } from './user/user.module';
+import { JwtAuthModule } from './auth/jwt.module';
 
 @Module({
   imports: [
@@ -10,11 +12,13 @@ import { CampginModule } from './campgin/campgin.module';
       port: 5432,
       username: 'postgres',
       password: 'mina',
-      database: 'postgres',
+      database: 'camp',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     CampginModule,
+    UserModule,
+    JwtAuthModule
   ],
 })
 export class AppModule {}

@@ -22,4 +22,7 @@ export class CreateCampaignDto {
   @IsNotEmpty()
   @IsIn(['Scheduled', 'drafted', 'Sent', 'Failed'])
   status: string;
+
+  @IsString()
+  userId: string;
 }

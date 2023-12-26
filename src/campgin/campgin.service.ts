@@ -12,9 +12,10 @@ export class CampginService {
     @InjectRepository(Campaign)
     private campaignRepository: Repository<Campaign>,
   ) {}
-
-  async create(createCampaignDto: CreateCampaignDto): Promise<Campaign> {
-    const campaign = this.campaignRepository.create(createCampaignDto);
+  async create(createCampaignDto: CreateCampaignDto, userId: number) {
+    const campaign = new Campaign();
+    // Set the properties of the campaign from the DTO
+    campaign.userId = userId;
     return this.campaignRepository.save(campaign);
   }
   async findAll(
@@ -70,13 +71,18 @@ export class CampginService {
     return this.campaignRepository.find();
   }
 
-  // find one by id
-  async findOne(id: number) {
-    return this.campaignRepository.findOne({ where: { id } });
-  }
 
+  async findOne(id: number, userId: number) {
+    return this.campaignRepository.findOne({ where: { id, userId } });
+  }
+  
+  
+
+  // find one by id
   async update(id: number, updateCampginDto: UpdateCampginDto) {
-    return this.campaignRepository.update(id, updateCampginDto);
+    const { userId, ...rest } = updateCampginDto;
+    const updatedCampaign = { userId: Number(userId), ...rest };
+    return this.campaignRepository.update(id, updatedCampaign);
   }
 
   async remove(id: number) {

@@ -1,17 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { CampginService } from './campgin.service';
 import { CreateCampaignDto } from './dto/create-campgin.dto';
 import { UpdateCampginDto } from './dto/update-campgin.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Campaign } from './entities/campgin.entity';
 
 @Controller('campgin')
 export class CampginController {
   constructor(private readonly campginService: CampginService) {}
-
   @Post()
-  create(@Body() createCampaignDto: CreateCampaignDto) {
-    return this.campginService.create(createCampaignDto);
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() createCampaignDto: CreateCampaignDto, @Req() req) {
+    const userId = req.user.userId;
+    return this.campginService.create(createCampaignDto, userId);
   }
-
   @Get()
   findAll(
     @Query('limit') limit: number,
@@ -36,8 +38,8 @@ export class CampginController {
 
   @Get(':id')
 
-  async findOne(@Param('id') id: number) {
-    return await this.campginService.findOne(+id);
+  async findOne(@Param('id') id: number, @Req() req) {
+    return await this.campginService.findOne(+id, req.user.userId);
   }
 
   @Delete(':id')
