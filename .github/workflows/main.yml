@@ -1,9 +1,7 @@
 name: CI NestJs App
 
 on:
-  push:
-    branches:
-      - main  # Adjust the branch name as needed
+  push: # Adjust the branch name as needed
 
 jobs:
   build:
