@@ -1,7 +1,0 @@
-# render.yaml
-
-services:
-  - type: web
-    name: campgin
-    buildCommand: pnpm install && pnpm run build
-    startCommand: pnpm start
