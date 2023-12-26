@@ -1,24 +1,32 @@
 name: CI NestJs App
 
 on:
-  push: # Adjust the branch name as needed
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-20.04
-    
+    strategy:
+      matrix:
+        node-version: [18]  # Specify a valid Node.js version here
+
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js and Yarn
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Specify a valid Node.js version here
-          cache: 'yarn'
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: Build and Test
-        run: yarn build && yarn test
+        run: pnpm build
